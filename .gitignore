@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+
+# IDE
+.vscode/
+
+# Dependencies
+venv/
+facebook-sdk/
+
+# Secrets
+**/secrets.json
+
+# Data folders
+data/*.json
+output/*.xlsx
