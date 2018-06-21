@@ -1,4 +1,5 @@
 import json
+import time
 
 from src.sentiment_analysis import SentimentAnalysis
 from src.util import write_local_json, read_local_json
@@ -57,6 +58,8 @@ class CommentSentiment:
         :returns: Comment text and sentiment data
 
         """
+        # Manual throttling in case of speedy network
+        # time.sleep(1)
 
         sentiment_object = {}
         sentiment_object['text'] = text

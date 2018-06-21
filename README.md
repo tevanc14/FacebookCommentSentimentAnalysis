@@ -45,3 +45,11 @@ Google Cloud Platform's natural language processing API is used to retrieve:
 
 - Sentiment data (from -1 to +1, how positive or negative is the given text)
 - Entity sentiment data (extract entities from text and similar sentiment data)
+
+#### Caveat
+
+If the network speed is fast enough when hitting these APIs, it is probable
+that the API quota 'DefaultRequestsPerMinutePerProject' will be exceeded.
+
+If this happens, the requests can be manually throttled with a timer to
+stay within the default GCP bounds.

@@ -16,7 +16,7 @@ def get_spreadsheets_of_sentiment():
 
     # Get sentiment analysis data on comments
     comment_sentiment = CommentSentiment(post_comments)
-    sentiment_analysis = comment_sentiment.get_sentiment_analysis(False)
+    sentiment_analysis = comment_sentiment.get_sentiment_analysis(True)
 
     # Create spreadsheet with comments, sentiment scores, and parent post
     sentiment_writer = SentimentWriter()
