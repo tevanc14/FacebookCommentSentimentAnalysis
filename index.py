@@ -29,5 +29,3 @@ def get_spreadsheets_of_sentiment():
 
 if __name__ == '__main__':
     get_spreadsheets_of_sentiment()
-
-# TODO: Combine common functions into util file (get abbreviation, read json file)

@@ -1,7 +1,7 @@
 import json
-import os
 
 from src.sentiment_analysis import SentimentAnalysis
+from src.util import write_local_json, read_local_json
 
 
 class CommentSentiment:
@@ -20,15 +20,13 @@ class CommentSentiment:
         if fresh_data:
             self.get_fresh_sentiment_data()
 
-        with open(os.path.join('data', 'sentiments.json'),
-                  'r') as sentiments_file:
-            return json.load(sentiments_file)
+        return read_local_json('sentiments')
 
     def get_fresh_sentiment_data(self):
         """Get data and write to json file."""
 
         sentiment_data = self.gather_sentiment_data()
-        write_sentiment_data(json.loads(json.dumps(sentiment_data)))
+        write_local_json('sentiments', json.loads(json.dumps(sentiment_data)))
 
     def gather_sentiment_data(self):
         """Iterate through comments to add sentiment data.
@@ -69,14 +67,3 @@ class CommentSentiment:
         if entity_sentiment_result is not None:
             sentiment_object['entitySentiment'] = entity_sentiment_result
         return sentiment_object
-
-
-def write_sentiment_data(sentiment_data):
-    """Write sentiment data to json file.
-
-    :param sentiment_data: Comments and their sentiment data
-
-    """
-
-    with open(os.path.join('data', 'sentiments.json'), 'w') as sentiments_file:
-        json.dump(sentiment_data, sentiments_file)

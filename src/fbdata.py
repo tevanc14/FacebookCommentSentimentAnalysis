@@ -3,9 +3,10 @@ import json
 import os
 import requests
 
+from src.util import write_local_json, read_local_json
+
 
 class FacebookData:
-    """ """
     graph_api_version = '3.0'
 
     def __init__(self):
@@ -37,8 +38,7 @@ class FacebookData:
         if fresh_data:
             self.get_fresh_post_comments()
 
-        with open(os.path.join('data', 'comments.json'), 'r') as comments_file:
-            return json.load(comments_file)
+        return read_local_json('comments')
 
     def get_fresh_post_comments(self):
         """Traverse the graph to get data and write it to a json file."""
@@ -46,7 +46,7 @@ class FacebookData:
         page_id = self.get_page_id()
         posts = self.get_posts(page_id)
         comments = self.get_comments(posts)
-        write_post_comments(comments)
+        write_local_json('comments', comments)
 
     def get_page_id(self):
         """Retrieve the page id for a certain page name.
@@ -108,14 +108,3 @@ def aggregate_paginated_data(response_data):
                 response_data['paging']['next']).json()
         except KeyError:
             return aggregate
-
-
-def write_post_comments(post_comments):
-    """Write Facebook data to json file.
-
-    :param post_comments: All posts and their comments
-
-    """
-
-    with open(os.path.join('data', 'comments.json'), 'w') as comments_file:
-        json.dump(post_comments, comments_file)

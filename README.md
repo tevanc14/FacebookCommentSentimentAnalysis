@@ -2,7 +2,8 @@
 
 This project retrieves all posts for a given Facebook page, performs both
 [sentiment analysis](https://cloud.google.com/natural-language/docs/basics#sentiment_analysis) and
-[entity sentiment analysis](https://cloud.google.com/natural-language/docs/basics#entity-sentiment-analysis), and then gathers that data into spreadsheets for valuable viewing.
+[entity sentiment analysis](https://cloud.google.com/natural-language/docs/basics#entity-sentiment-analysis),
+and then gathers that data into spreadsheets for valuable viewing.
 
 ## Usage
 
@@ -27,3 +28,20 @@ pip install -r requirements.txt
 ```shell
 python3 index.py
 ```
+
+### Facebook Graph API
+
+The Graph API is utitlized to traverse through the graph in the following
+fashion:
+
+- Start with the node of a given page
+- Get all connected post nodes
+- Get all connected comment nodes
+- page -> post(s) -> comment(s)
+
+### Google Cloud Natural Language
+
+Google Cloud Platform's natural language processing API is used to retrieve:
+
+- Sentiment data (from -1 to +1, how positive or negative is the given text)
+- Entity sentiment data (extract entities from text and similar sentiment data)
