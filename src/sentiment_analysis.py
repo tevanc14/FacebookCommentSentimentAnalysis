@@ -1,50 +1,63 @@
-import json
-import os
+import six
+import sys
 
-from src.data_interaction import get_post_comments
-from src.gcp_nlp import entity_sentiment_text, sentiment_text
-
-
-def get_sentiment_analysis(fresh_data, post_comments):
-    if fresh_data:
-        get_sentiment_data(post_comments)
-
-    with open(os.path.join('data', 'sentiments.json'), 'r') as sentiments_file:
-        return json.load(sentiments_file)
+from google.cloud import language
+from google.cloud.language import enums
+from google.cloud.language import types
+from google.protobuf.json_format import MessageToDict, MessageToJson
+from langdetect import detect
 
 
-def get_sentiment_data(post_comments):
-    sentiment_data = gather_sentiment_data(post_comments)
-    write_sentiment_data(json.loads(json.dumps(sentiment_data)))
+class SentimentAnalysis():
+    def __init__(self):
+        self.client = language.LanguageServiceClient()
 
+    def sentiment_text(self, text):
+        """Detects sentiment in the text.
+        
+        Arguments:
+            text {string} -- The text to be analyzed
+        
+        Returns:
+            [dict] -- Sentiment data for given text
+        """
 
-def gather_sentiment_data(post_comments):
-    sentiment_data = []
-    for post in post_comments:
-        datum = {}
-        datum['comments'] = []
+        if isinstance(text, six.binary_type):
+            text = text.decode('utf-8')
 
-        if 'message' in post:
-            datum['post'] = post['message']
+        # Instantiates a plain text document
+        document = types.Document(
+            content=text, type=enums.Document.Type.PLAIN_TEXT)
 
-        for comment in post['comments']:
-            datum['comments'].append(
-                build_sentiment_object(comment['message']))
-        sentiment_data.append(datum)
+        return MessageToDict(self.client.analyze_sentiment(document))
 
-    return sentiment_data
+    def entity_sentiment_text(self, text):
+        """Detects entity sentiment in the provided text.
+        
+        Arguments:
+            text {string} -- The text to be analyzed
+        
+        Returns:
+            [dict] -- Entity sentiment data for given text
+        """
 
+        # Entity analysis only available in english
+        try:
+            if detect(text) != 'en':
+                return None
+        except:
+            return None
 
-def build_sentiment_object(text):
-    sentiment_object = {}
-    sentiment_object['text'] = text
-    sentiment_object['textSentiment'] = sentiment_text(text)
-    entity_sentiment_result = entity_sentiment_text(text)
-    if entity_sentiment_result is not None:
-        sentiment_object['entitySentiment'] = entity_sentiment_result
-    return sentiment_object
+        if isinstance(text, six.binary_type):
+            text = text.decode('utf-8')
 
+        document = types.Document(
+            content=text.encode('utf-8'), type=enums.Document.Type.PLAIN_TEXT)
 
-def write_sentiment_data(sentiment_data):
-    with open(os.path.join('data', 'sentiments.json'), 'w') as sentiments_file:
-        json.dump(sentiment_data, sentiments_file)
+        # Detect and send native Python encoding to receive correct word offsets
+        encoding = enums.EncodingType.UTF32
+        if sys.maxunicode == 65535:
+            encoding = enums.EncodingType.UTF16
+
+        return MessageToDict(
+            self.client.analyze_entity_sentiment(document, encoding))

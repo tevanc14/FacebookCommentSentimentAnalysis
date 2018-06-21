@@ -1,30 +1,52 @@
 import os
 import pandas as pd
 
-writer = pd.ExcelWriter(os.path.join('output', 'contains_keyword.xlsx'))
 
+class ContainsKeywordWriter():
+    def __init__(self, keyword):
+        self.keyword = keyword
+        self.comment_container = {'post': '', 'comment': []}
+        self.writer = pd.ExcelWriter(
+            os.path.join('output', 'contains_keyword.xlsx'))
 
-def write_data_that_contains_keyword(post_comments, keyword):
-    for post in post_comments:
-        process_post(post, keyword)
+    def write_data_that_contains_keyword(self, post_comments):
+        """Write comments that contain a keyword to a spreadsheet.
+        
+        Arguments:
+            post_comments {list} -- Posts with their respective comments
+        """
 
-    writer.save()
+        for post in post_comments:
+            self.process_post(post)
 
+        self.writer.save()
 
-def process_post(post, keyword):
-    if 'message' in post:
-        dictionary = {'post': post['message'], 'comment': []}
-        for comment in post['comments']:
-            process_comment(keyword, comment, dictionary)
+    def process_post(self, post):
+        """Iterate through posts to process their comments.
+        
+        Arguments:
+            post {dict} -- Post with its respective comments
+        """
 
-        write_contains_keyword_to_excel(dictionary, keyword)
+        if 'message' in post:
+            self.comment_container['post'] = post['message']
+            for comment in post['comments']:
+                self.process_comment(comment)
 
+            self.write_contains_keyword_to_excel()
 
-def process_comment(keyword, comment, dictionary):
-    if keyword in comment['message'].lower():
-        dictionary['comment'].append(comment['message'])
+    def write_contains_keyword_to_excel(self):
+        """Take a dictionary of comments to write to a spreadsheet."""
 
+        dataframe = pd.DataFrame(data=self.comment_container)
+        dataframe.to_excel(self.writer, self.keyword)
 
-def write_contains_keyword_to_excel(dictionary, keyword):
-    dataframe = pd.DataFrame(data=dictionary)
-    dataframe.to_excel(writer, keyword)
+    def process_comment(self, comment):
+        """Check if comment contains the keyword.
+        
+        Arguments:
+            comment {dict} -- Comment on a post
+        """
+
+        if self.keyword in comment['message'].lower():
+            self.comment_container['comment'].append(comment['message'])
