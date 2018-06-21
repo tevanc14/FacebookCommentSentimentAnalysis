@@ -53,3 +53,9 @@ that the API quota 'DefaultRequestsPerMinutePerProject' will be exceeded.
 
 If this happens, the requests can be manually throttled with a timer to
 stay within the default GCP bounds.
+
+### Spreadsheet construction
+
+The current need for this was to extract comments containing a keyword, and
+separate positive and negative sentiment scoring comments. So two spreadsheets
+are created for each of those purposes.
