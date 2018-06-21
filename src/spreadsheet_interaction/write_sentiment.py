@@ -10,9 +10,9 @@ class SentimentWriter():
 
     def write_sentiment_data(self, sentiment_analysis):
         """Write comments and their sentiment score to a spreadsheet.
-        
-        Arguments:
-            sentiment_analysis {list} -- Comments with sentiment information
+
+        :param sentiment_analysis: Comments with sentiment information
+
         """
 
         for post in sentiment_analysis:
@@ -22,9 +22,9 @@ class SentimentWriter():
 
     def process_post(self, post):
         """Iterate through posts to process their comments.
-        
-        Arguments:
-            post {dict} -- Post with its respective comments
+
+        :param post: Post with its respective comments
+
         """
 
         if 'post' in post:
@@ -37,9 +37,9 @@ class SentimentWriter():
 
     def process_comment(self, comment):
         """Gather sentiment data from a comment and separate positive from negative.
-        
-        Arguments:
-            comment {dict} -- Comment with sentiment data
+
+        :param comment: Comment with sentiment data
+
         """
 
         if 'score' in comment['textSentiment']['documentSentiment']:
@@ -64,10 +64,10 @@ class SentimentWriter():
 
 def add_comment(comment, comment_container):
     """Add the text and overall sentiment to a container.
-    
-    Arguments:
-        comment {dict} -- Comment with sentiment data
-        comment_container {dict} -- Holds comment text, sentiment score, and respective post
+
+    :param comment: Comment with sentiment data
+    :param comment_container: Holds comment text
+
     """
 
     comment_container['text'].append(comment['text'])
@@ -77,12 +77,10 @@ def add_comment(comment, comment_container):
 
 def get_post_abbreviation(comment_container):
     """Get an abbreviation of the post text to label the corresponding sheet.
-    
-    Arguments:
-        comment_container {dict} -- Holds comment text, sentiment score, and respective post
-    
-    Returns:
-        [string] -- Abbreviation of the post text
+
+    :param comment_container: Holds comment text
+    :returns: Abbreviation of the post text
+
     """
 
     if len(comment_container['post']) > 0:

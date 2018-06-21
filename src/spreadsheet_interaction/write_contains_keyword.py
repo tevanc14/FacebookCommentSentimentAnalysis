@@ -11,9 +11,9 @@ class ContainsKeywordWriter():
 
     def write_data_that_contains_keyword(self, post_comments):
         """Write comments that contain a keyword to a spreadsheet.
-        
-        Arguments:
-            post_comments {list} -- Posts with their respective comments
+
+        :param post_comments: Posts with their respective comments
+
         """
 
         for post in post_comments:
@@ -23,9 +23,9 @@ class ContainsKeywordWriter():
 
     def process_post(self, post):
         """Iterate through posts to process their comments.
-        
-        Arguments:
-            post {dict} -- Post with its respective comments
+
+        :param post: Post with its respective comments
+
         """
 
         if 'message' in post:
@@ -43,9 +43,9 @@ class ContainsKeywordWriter():
 
     def process_comment(self, comment):
         """Check if comment contains the keyword.
-        
-        Arguments:
-            comment {dict} -- Comment on a post
+
+        :param comment: Comment on a post
+
         """
 
         if self.keyword in comment['message'].lower():

@@ -11,12 +11,10 @@ class CommentSentiment:
 
     def get_sentiment_analysis(self, fresh_data):
         """Retrieve sentiment analysis data.
-        
-        Arguments:
-            fresh_data {bool} -- Hit GCP API or read local data
-        
-        Returns:
-            [list] -- Sentiment analysis data for all comments
+
+        :param fresh_data: Hit GCP API or read local data
+        :returns: Sentiment analysis data for all comments
+
         """
 
         if fresh_data:
@@ -34,9 +32,9 @@ class CommentSentiment:
 
     def gather_sentiment_data(self):
         """Iterate through comments to add sentiment data.
-        
-        Returns:
-            [list] -- Dicts of sentiment data
+
+        :returns: Dicts of sentiment data
+
         """
 
         sentiment_data = []
@@ -56,12 +54,10 @@ class CommentSentiment:
 
     def build_sentiment_dictionary(self, text):
         """Add the sentiment data to comment.
-        
-        Arguments:
-            text {string} -- Text of a comment
-        
-        Returns:
-            [dict] -- Comment text and sentiment data
+
+        :param text: Text of a comment
+        :returns: Comment text and sentiment data
+
         """
 
         sentiment_object = {}
@@ -77,9 +73,9 @@ class CommentSentiment:
 
 def write_sentiment_data(sentiment_data):
     """Write sentiment data to json file.
-    
-    Arguments:
-        sentiment_data {dict} -- Comments and their sentiment data
+
+    :param sentiment_data: Comments and their sentiment data
+
     """
 
     with open(os.path.join('data', 'sentiments.json'), 'w') as sentiments_file:

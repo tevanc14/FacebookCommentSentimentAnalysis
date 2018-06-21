@@ -14,12 +14,10 @@ class SentimentAnalysis():
 
     def sentiment_text(self, text):
         """Detects sentiment in the text.
-        
-        Arguments:
-            text {string} -- The text to be analyzed
-        
-        Returns:
-            [dict] -- Sentiment data for given text
+
+        :param text: The text to be analyzed
+        :returns: Sentiment data for given text
+
         """
 
         if isinstance(text, six.binary_type):
@@ -33,12 +31,10 @@ class SentimentAnalysis():
 
     def entity_sentiment_text(self, text):
         """Detects entity sentiment in the provided text.
-        
-        Arguments:
-            text {string} -- The text to be analyzed
-        
-        Returns:
-            [dict] -- Entity sentiment data for given text
+
+        :param text: The text to be analyzed
+        :returns: Entity sentiment data for given text
+
         """
 
         # Entity analysis only available in english

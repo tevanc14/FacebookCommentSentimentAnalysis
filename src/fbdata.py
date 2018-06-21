@@ -5,6 +5,7 @@ import requests
 
 
 class FacebookData:
+    """ """
     graph_api_version = '3.0'
 
     def __init__(self):
@@ -15,9 +16,9 @@ class FacebookData:
 
     def get_secrets(self):
         """Retrieve private data that doesn't go in source control.
-        
-        Returns:
-            [dict] -- Contents of the secrets.json file
+
+        :returns: Contents of the secrets.json file
+
         """
 
         current_directory = os.path.dirname(__file__)
@@ -27,12 +28,10 @@ class FacebookData:
 
     def get_post_comments(self, fresh_data):
         """Retrieve Facebook comments on certain posts.
-        
-        Arguments:
-            fresh_data {bool} -- Hit Facebook Graph API or read local data
-        
-        Returns:
-            [list] -- All comments for a set of posts
+
+        :param fresh_data: Hit Facebook Graph API or read local data
+        :returns: All comments for a set of posts
+
         """
 
         if fresh_data:
@@ -51,9 +50,9 @@ class FacebookData:
 
     def get_page_id(self):
         """Retrieve the page id for a certain page name.
-        
-        Returns:
-            [string] -- Id of the page to be searched
+
+        :returns: Id of the page to be searched
+
         """
 
         page = self.graph.get_object(id=self.secrets['page_name'])
@@ -61,12 +60,10 @@ class FacebookData:
 
     def get_posts(self, page_id):
         """Retrieve the posts for a page id.
-        
-        Arguments:
-            page_id {string} -- Id of the page to be searched
-        
-        Returns:
-            [list] -- All posts on a page
+
+        :param page_id: Id of the page to be searched
+        :returns: All posts on a page
+
         """
 
         posts = self.graph.get_connections(id=page_id, connection_name='posts')
@@ -75,12 +72,10 @@ class FacebookData:
 
     def get_comments(self, posts):
         """Retrieve comments to posts.
-        
-        Arguments:
-            posts {dict} -- Posts to get comments from
-        
-        Returns:
-            [list] -- Posts with comments
+
+        :param posts: Posts to get comments from
+        :returns: Posts with comments
+
         """
 
         for post in posts:
@@ -94,17 +89,15 @@ class FacebookData:
 
 def aggregate_paginated_data(response_data):
     """Iterate through pages of Facebook data.
-
+    
     Facebook's Graph API will return a fixed number of results before it
     starts a new page of data (to avoid returning too large a number of
     things). So the data must be requested repeatedly until there are no
     pages left.
-    
-    Arguments:
-        response_data {dict} -- The initial response from Facebook
-    
-    Returns:
-        [list] -- The compiled results from all pages
+
+    :param response_data: The initial response from Facebook
+    :returns: The compiled results from all pages
+
     """
 
     aggregate = []
@@ -119,9 +112,9 @@ def aggregate_paginated_data(response_data):
 
 def write_post_comments(post_comments):
     """Write Facebook data to json file.
-    
-    Arguments:
-        post_comments {list} -- All posts and their comments
+
+    :param post_comments: All posts and their comments
+
     """
 
     with open(os.path.join('data', 'comments.json'), 'w') as comments_file:
