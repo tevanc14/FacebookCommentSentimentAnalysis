@@ -19,7 +19,7 @@ numpy==1.14.5
 openpyxl==2.5.4
 pandas==0.23.1
 pprint==0.1
-protobuf==3.6.0
+protobuf==3.18.3
 pyasn1==0.4.3
 pyasn1-modules==0.2.1
 pylint==1.9.2
